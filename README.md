@@ -1,13 +1,16 @@
-# Ngrok 内网穿透一键配置脚本
+# openwrt Ngrok 内网穿透一键配置脚本
 
 使用Ngrok的隧道，一键转发内网的Http/TCP端口
 
 > PS: 由于Ngrok免费版本的限制，本脚本只能转发HTTP和TCP协议
 
+后台启动需要依赖“Screen”
+未安装的用户请执行：opkg update && opkg install Screen
+
 ## 使用方法
 
 ```shell
-wget -N https://raw.githubusercontent.com/lauren12133/Ngrok-1key/master/ngrok.sh && sh ngrok.sh
+wget -N https://github.com/lauren12133/Ngrok-1key/raw/master/ngrok.sh && sh ngrok.sh
 ```
 
 快捷方式 `bash ngrok.sh`
@@ -20,14 +23,6 @@ wget -N https://raw.githubusercontent.com/lauren12133/Ngrok-1key/master/ngrok.sh
 
 Ngrok: https://ngrok.com/
 
-## 防和谐仓库
+## 如需使用市面主流liux操作环境请访问“Misaka”项目
 
 GitHub: https://github.com/Misaka-blog/Ngrok-1key
-
-BitBucket: https://bitbucket.org/misakano7545/ngrok-1key/
-
-GitLab: https://gitlab.com/misakano7545/Ngrok-1key
-
-## 交流群
-
-[Telegram 群组](https://t.me/misakanetcn)
