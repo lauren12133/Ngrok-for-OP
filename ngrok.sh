@@ -13,12 +13,6 @@ yellow(){
 	echo -e "\033[33m\033[01m$1\033[0m"
 }
 
-
-## 统计脚本运行次数
-COUNT=$(curl -sm2 "https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fraw.githubusercontents.com%2FMisaka-blog%2FNgrok-1key%2Fmaster%2Fngrok.sh&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false" 2>&1) &&
-TODAY=$(expr "$COUNT" : '.*\s\([0-9]\{1,\}\)\s/.*')
-TOTAL=$(expr "$COUNT" : '.*/\s\([0-9]\{1,\}\)\s.*')
-
 archAffix(){
 	cpuArch=$(uname -m)
 	case "$cpuArch" in
@@ -30,12 +24,6 @@ archAffix(){
 	esac
 }
 
-checkStatus(){
-	[[ -z $(ngrok -help 2>/dev/null) ]] && ngrokStatus="未安装"
-	[[ -n $(ngrok -help 2>/dev/null) ]] && ngrokStatus="已安装"
-	[[ -f /root/.ngrok2/ngrok.yml ]] && authStatus="已授权"
-	[[ ! -f /root/.ngrok2/ngrok.yml ]] && authStatus="未授权"
-}
 
 back2menu(){
 	green "所选操作执行完成"
@@ -69,8 +57,6 @@ download_ngrok(){
 }
 
 ngrok_authtoken(){
-	[ $ngrokStatus == "未安装" ] && red "检测到未安装Ngrok程序包，无法执行操作！！" && back2menu
-	[ $authStatus == "已授权" ] && red "已授权Ngrok程序包，无需重复授权！！！" && back2menu
 	read -p "请输入Ngrok官方网站的Authtoken：" authtoken
 	[ -z $authtoken ] && red "无输入Authtoken，授权过程中断！" && back2menu
 	ngrok authtoken $authtoken
@@ -99,8 +85,6 @@ select_region(){
 }
 
 runTunnel(){
-	[ $ngrokStatus == "未安装" ] && red "检测到未安装Ngrok程序包，无法执行操作！！" && back2menu
-	[ $authStatus == "未授权" ] && red "未授权Ngrok程序包，无法执行操作！！！" && back2menu
 	select_region
 	read -p "请输入你所使用的协议（默认HTTP）：" httptcp
 	[ -z $httptcp ] && httptcp="http"
@@ -114,14 +98,11 @@ runTunnel(){
 }
 
 killTunnel(){
-	[ $ngrokStatus == "未安装" ] && red "检测到未安装Ngrok程序包，无法执行操作！！" && back2menu
-	[ $authStatus == "未授权" ] && red "未授权Ngrok程序包，无法执行操作！！！" && back2menu
 	screen -S screen4ngrok -X quit
 	green "隧道停止成功！"
 }
 
 uninstall(){
-	[ $ngrokStatus == "未安装" ] && red "检测到未安装Ngrok程序包，无法执行操作！！" && back2menu
 	rm -rf /usr/bin/ngrok
 	rm -rf /root/ngrok-stable-linux-$cpuArch.tgz ngrok .ngrok2 ngrok.sh
 	green "Ngrok 程序包已卸载成功"
@@ -130,7 +111,6 @@ uninstall(){
 
 menu(){
 	clear
-	checkStatus
 	red "=================================="
 	echo "                           "
 	red "   Ngrok openwrt 内网穿透一键脚本       "
@@ -138,8 +118,6 @@ menu(){
 	echo "                           "
 	red "=================================="
 	echo "                           "
-	yellow "今日运行次数：$TODAY   总共运行次数：$TOTAL"
-	echo "            "
 	green "1. 安装/更新Ngrok程序包"
 	green "2. 授权Ngrok账号"
 	green "3. 启用隧道"
@@ -155,7 +133,7 @@ menu(){
 		3) runTunnel ;;
 		4) killTunnel ;;
 		5) uninstall ;;
-		6) https://raw.githubusercontent.com/lauren12133/Ngrok-1key/master/ngrok.sh && sh ngrok.sh ;;
+		6) rm -rf /root/ngrok.sh && wget https://raw.githubusercontent.com/lauren12133/Ngrok-1key/master/ngrok.sh && sh ngrok.sh ;;
 		*) exit 1 ;;
 	esac
 }
