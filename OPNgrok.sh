@@ -1,5 +1,4 @@
 #!/bin/bash
-"请在root用户下运行脚本"
 
 #检查设备cpu型号
 archAffix(){
