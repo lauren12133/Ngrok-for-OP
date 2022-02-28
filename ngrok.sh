@@ -58,6 +58,7 @@ getNgrokAddress(){
 		green "隧道启动成功！"
 		yellow "当前隧道HTTP地址为：http://$httpNgrok"
 		yellow "当前隧道HTTPS地址为：https://$httpsNgrok"
+		yellow "如未获取重新启动即可"
 	fi
 }
 
@@ -107,7 +108,7 @@ runTunnel(){
 	read -p "请输入反代端口（默认80）：" tunnelPort
 	[ -z $tunnelPort ] && tunnelPort=80
 	screen -USdm screen4ngrok ngrok $httptcp $tunnelPort -region $ngrok_region
-	yellow "等待5秒，获取Ngrok的外网地址"
+	yellow "等待5秒，获取Ngrok的外网地址 "
 	sleep 5
 	getNgrokAddress
 	back2menu
