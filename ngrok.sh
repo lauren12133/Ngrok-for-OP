@@ -33,8 +33,8 @@ archAffix(){
 }
 
 checkStatus(){
-	[[ -z $(ngrok -help 2>/dev/null) ]] && ngrokStatus="未安装"
-	[[ -n $(ngrok -help 2>/dev/null) ]] && ngrokStatus="已安装"
+	[[ -z $(find /usr/bin/Ngrok) ]] && ngrokStatus="未安装"
+	[[ -n $(find /usr/bin/Ngrok) ]] && ngrokStatus="已安装"
 	[[ -f /root/.ngrok2/ngrok.yml ]] && authStatus="已授权"
 	[[ ! -f /root/.ngrok2/ngrok.yml ]] && authStatus="未授权"
 }
