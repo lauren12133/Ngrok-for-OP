@@ -13,9 +13,30 @@ yellow(){
 	echo -e "\033[33m\033[01m$1\033[0m"
 }
 
+REGEX=("debian" "ubuntu" "centos|red hat|kernel|oracle linux|alma|rocky" "'amazon linux'" "alpine")
+RELEASE=("Debian" "Ubuntu" "CentOS" "CentOS" "Alpine")
+PACKAGE_UPDATE=("apt -y update" "apt -y update" "yum -y update" "yum -y update" "apk update -f")
+PACKAGE_INSTALL=("apt -y install" "apt -y install" "yum -y install" "yum -y install" "apk add -f")
 
 [[ $EUID -ne 0 ]] && yellow "请在root用户下运行脚本" && exit 1
 
+CMD=("$(grep -i pretty_name /etc/os-release 2>/dev/null | cut -d \" -f2)" "$(hostnamectl 2>/dev/null | grep -i system | cut -d : -f2)" "$(lsb_release -sd 2>/dev/null)" "$(grep -i description /etc/lsb-release 2>/dev/null | cut -d \" -f2)" "$(grep . /etc/redhat-release 2>/dev/null)" "$(grep . /etc/issue 2>/dev/null | cut -d \\ -f1 | sed '/^[ ]*$/d')")
+
+for i in "${CMD[@]}"; do
+	SYS="$i" && [[ -n $SYS ]] && break
+done
+
+for ((int = 0; int < ${#REGEX[@]}; int++)); do
+	[[ $(echo "$SYS" | tr '[:upper:]' '[:lower:]') =~ ${REGEX[int]} ]] && SYSTEM="${RELEASE[int]}" && [[ -n $SYSTEM ]] && break
+done
+
+[[ -z $SYSTEM ]] && red "不支持VPS的当前系统，请使用主流操作系统" && exit 1
+[[ -z $(curl 2>/dev/null) ]] && ${PACKAGE_UPDATE[int]} && ${PACKAGE_INSTALL[int]} curl
+
+## 统计脚本运行次数
+COUNT=$(curl -sm2 "https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fraw.githubusercontents.com%2FMisaka-blog%2FNgrok-1key%2Fmaster%2Fngrok.sh&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false" 2>&1) &&
+TODAY=$(expr "$COUNT" : '.*\s\([0-9]\{1,\}\)\s/.*')
+TOTAL=$(expr "$COUNT" : '.*/\s\([0-9]\{1,\}\)\s.*')
 
 archAffix(){
 	cpuArch=$(uname -m)
@@ -61,13 +82,13 @@ getNgrokAddress(){
 download_ngrok(){
 	[ $ngrokStatus == "已安装" ] && red "检测到已安装Ngrok程序包，无需重复安装！！" && exit 1
 	wget -N https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-$cpuArch.tgz
-	tar -xzvf ngrok-stable-linux-$cpuArch.tgz -C /usr/bin
+	tar -xzvf ngrok-stable-linux-$cpuArch.tgz -C /usr/local/bin
 	green "Ngrok 程序包已安装成功"
 	back2menu
 }
 
 ngrok_authtoken(){
-	[ $ngrokStatus == "未安装" ] && red "检测到未安装Ngrok程序包，无法执行操作！！" 
+	[ $ngrokStatus == "未安装" ] && red "检测到未安装Ngrok程序包，无法执行操作！！" && back2menu
 	[ $authStatus == "已授权" ] && red "已授权Ngrok程序包，无需重复授权！！！" && back2menu
 	read -p "请输入Ngrok官方网站的Authtoken：" authtoken
 	[ -z $authtoken ] && red "无输入Authtoken，授权过程中断！" && back2menu
@@ -122,7 +143,7 @@ killTunnel(){
 
 uninstall(){
 	[ $ngrokStatus == "未安装" ] && red "检测到未安装Ngrok程序包，无法执行操作！！" && back2menu
-	rm -f /usr/bin/ngrok
+	rm -f /usr/local/bin/ngrok
 	green "Ngrok 程序包已卸载成功"
 	back2menu
 }
@@ -133,7 +154,7 @@ menu(){
 	red "=================================="
 	echo "                           "
 	red "      Ngrok 内网穿透一键脚本       "
-	red "         感谢 by 小御坂的破站           "
+	red "          by 小御坂的破站           "
 	echo "                           "
 	red "  Site: https://owo.misaka.rest  "
 	echo "                           "
@@ -159,7 +180,7 @@ menu(){
 		3) runTunnel ;;
 		4) killTunnel ;;
 		5) uninstall ;;
-		6) wget -N https://raw.githubusercontent.com/lauren12133/Ngrok-1key/master/ngrok.sh && sh ngrok.sh ;;
+		6) wget -N https://gitlab.com/misakano7545/Ngrok-1key/-/raw/master/ngrok.sh && bash ngrok.sh ;;
 		*) exit 1 ;;
 	esac
 }
