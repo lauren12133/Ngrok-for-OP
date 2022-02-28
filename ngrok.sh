@@ -62,7 +62,6 @@ getNgrokAddress(){
 }
 
 download_ngrok(){
-	[ $ngrokStatus == "已安装" ] && red "检测到已安装Ngrok程序包，无需重复安装！！" && exit 1
 	wget -N https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-$cpuArch.tgz
 	tar -xzvf ngrok-stable-linux-$cpuArch.tgz -C /usr/bin
 	green "Ngrok 程序包已安装成功"
@@ -144,10 +143,7 @@ menu(){
 	echo "                           "
 	yellow "今日运行次数：$TODAY   总共运行次数：$TOTAL"
 	echo "            "
-	green "Ngrok 客户端状态：$ngrokStatus"
-	green "账户授权状态：$authStatus"
-	echo "            "
-	green "1. 下载Ngrok程序包"
+	green "1. 更新Ngrok程序包"
 	green "2. 授权Ngrok账号"
 	green "3. 启用隧道"
 	green "4. 停用隧道"
