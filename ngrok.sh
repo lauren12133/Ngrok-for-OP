@@ -142,7 +142,7 @@ menu(){
 	echo "                           "
 	yellow "今日运行次数：$TODAY   总共运行次数：$TOTAL"
 	echo "            "
-	green "1. 更新Ngrok程序包"
+	green "1. 安装/更新Ngrok程序包"
 	green "2. 授权Ngrok账号"
 	green "3. 启用隧道"
 	green "4. 停用隧道"
