@@ -49,9 +49,12 @@ back2menu(){
 
 getNgrokAddress(){
 	if [ $httptcp == "tcp" ]; then
+		tcpNgrok=$(curl --silent --show-error http://127.0.0.1:4040/api/tunnels | sed -nE 's/.*public_url":"tcp:..([^"]*).*/\1/p')
 		green "隧道启动成功！当前TCP隧道地址为：$tcpNgrok"
 	fi
 	if [ $httptcp == "http" ]; then
+		httpNgrok=$(curl --silent --show-error http://127.0.0.1:4040/api/tunnels | sed -nE 's/.*public_url":"http:..([^"]*).*/\1/p')
+		httpsNgrok=$(curl --silent --show-error http://127.0.0.1:4040/api/tunnels | sed -nE 's/.*public_url":"https..([^"]*).*/\1/p')
 		green "隧道启动成功！"
 		yellow "当前隧道HTTP地址为：http://$httpNgrok"
 		yellow "当前隧道HTTPS地址为：https://$httpsNgrok"
@@ -103,7 +106,7 @@ runTunnel(){
 	[ -z $httptcp ] && httptcp="http"
 	read -p "请输入反代端口（默认80）：" tunnelPort
 	[ -z $tunnelPort ] && tunnelPort=80
-	ngrok $httptcp $tunnelPort -region $ngrok_region
+	screen -USdm screen4ngrok ngrok $httptcp $tunnelPort -region $ngrok_region
 	yellow "等待5秒，获取Ngrok的外网地址"
 	sleep 5
 	getNgrokAddress
@@ -119,7 +122,8 @@ killTunnel(){
 
 uninstall(){
 	[ $ngrokStatus == "未安装" ] && red "检测到未安装Ngrok程序包，无法执行操作！！" && back2menu
-	rm -f /usr/bin/ngrok
+	rm -rf /usr/bin/ngrok
+	rm -rf /root/ngrok-stable-linux-$cpuArch.tgz ngrok .ngrok2 ngrok.sh
 	green "Ngrok 程序包已卸载成功"
 	back2menu
 }
