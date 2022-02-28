@@ -33,8 +33,8 @@ archAffix(){
 }
 
 checkStatus(){
-	[[ -z $(find /usr/bin/Ngrok) ]] && ngrokStatus="未安装"
-	[[ -n $(find /usr/bin/Ngrok) ]] && ngrokStatus="已安装"
+	[[ -z $(ngrok -help 2>/dev/null) ]] && ngrokStatus="未安装"
+	[[ -n $(ngrok -help 2>/dev/null) ]] && ngrokStatus="已安装"
 	[[ -f /root/.ngrok2/ngrok.yml ]] && authStatus="已授权"
 	[[ ! -f /root/.ngrok2/ngrok.yml ]] && authStatus="未授权"
 }
@@ -63,7 +63,7 @@ getNgrokAddress(){
 }
 
 download_ngrok(){
-	[ $ngrokStatus == "已安装" ] && red "检测到已安装Ngrok程序包，无需重复安装！！" && exit 1
+	[ $ngrokStatus == "已安装" ] && red "检测到已安装Ngrok程序包，无需重复安装！！" 
 	wget -N https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-$cpuArch.tgz
 	tar -xzvf ngrok-stable-linux-$cpuArch.tgz -C /usr/bin
 	green "Ngrok 程序包已安装成功"
