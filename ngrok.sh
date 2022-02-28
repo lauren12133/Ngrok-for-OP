@@ -86,11 +86,13 @@ select_region(){
 
 runTunnel(){
 	select_region
+	read -p "请输入你所使用的设备ip（默认127.0.0.1）：" ip
+	[ -z $ip ] && ip="127.0.0.1"
 	read -p "请输入你所使用的协议（默认HTTP）：" httptcp
 	[ -z $httptcp ] && httptcp="http"
 	read -p "请输入反代端口（默认80）：" tunnelPort
 	[ -z $tunnelPort ] && tunnelPort=80
-	screen -USdm screen4ngrok ngrok $httptcp $tunnelPort -region $ngrok_region
+	screen -USdm screen4ngrok ngrok $httptcp $ip:$tunnelPort -region $ngrok_region
 	yellow "等待5秒，获取Ngrok的外网地址 "
 	sleep 5
 	getNgrokAddress
@@ -109,6 +111,20 @@ uninstall(){
 	back2menu
 }
 
+start(){
+     select_region
+	read -p "请输入你所使用的设备ip（默认127.0.0.1）：" ip
+	[ -z $ip ] && ip="127.0.0.1"
+	read -p "请输入你所使用的协议（默认HTTP）：" httptcp
+	[ -z $httptcp ] && httptcp="http"
+	read -p "请输入反代端口（默认80）：" tunnelPort
+	[ -z $tunnelPort ] && tunnelPort=80
+	echo ngrok $httptcp $ip:$tunnelPort -region $ngrok_region 
+	yellow "请将输出的命令复制粘贴至openwrt-启动项 下拉最下方（本地启动脚本）exit0的上方即可开机启动 "
+	yellow "获取外网地址请登录https://dashboard.ngrok.com/endpoints/status Ngrok官网查看 "
+	back2menu
+}
+
 menu(){
 	clear
 	red "=================================="
@@ -124,6 +140,7 @@ menu(){
 	green "4. 停用隧道"
 	green "5. 卸载Ngrok程序包"
 	green "6. 更新脚本"
+	green "7. 开机自启"
 	green "0. 退出"
 	echo "         "
 	read -p "请输入数字:" NumberInput
@@ -134,6 +151,7 @@ menu(){
 		4) killTunnel ;;
 		5) uninstall ;;
 		6) rm -rf /root/ngrok.sh && wget https://raw.githubusercontent.com/lauren12133/Ngrok-1key/master/ngrok.sh && sh ngrok.sh ;;
+		7) start ;;
 		*) exit 1 ;;
 	esac
 }
