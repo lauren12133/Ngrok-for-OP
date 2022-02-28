@@ -13,7 +13,6 @@ yellow(){
 	echo -e "\033[33m\033[01m$1\033[0m"
 }
 
-[[ $EUID -ne 0 ]] && yellow "请在root用户下运行脚本" && exit 1
 
 ## 统计脚本运行次数
 COUNT=$(curl -sm2 "https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fraw.githubusercontents.com%2FMisaka-blog%2FNgrok-1key%2Fmaster%2Fngrok.sh&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false" 2>&1) &&
