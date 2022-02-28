@@ -126,7 +126,7 @@ killTunnel(){
 
 uninstall(){
 	[ $ngrokStatus == "未安装" ] && red "检测到未安装Ngrok程序包，无法执行操作！！" && back2menu
-	rm -f /usr/local/bin/ngrok
+	rm -f /usr/bin/ngrok
 	green "Ngrok 程序包已卸载成功"
 	back2menu
 }
@@ -137,7 +137,7 @@ menu(){
 	red "=================================="
 	echo "                           "
 	red "      Ngrok 内网穿透一键脚本       "
-	red "          by 小御坂的破站           "
+	red "         感谢 by 小御坂的破站           "
 	echo "                           "
 	red "  Site: https://owo.misaka.rest  "
 	echo "                           "
