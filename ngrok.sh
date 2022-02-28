@@ -101,7 +101,6 @@ select_region(){
 runTunnel(){
 	[ $ngrokStatus == "未安装" ] && red "检测到未安装Ngrok程序包，无法执行操作！！" && back2menu
 	[ $authStatus == "未授权" ] && red "未授权Ngrok程序包，无法执行操作！！！" && back2menu
-	[[ -z $(screen -help 2>/dev/null) ]] && ${PACKAGE_UPDATE[int]} && ${PACKAGE_INSTALL[int]} screen
 	select_region
 	read -p "请输入你所使用的协议（默认HTTP）：" httptcp
 	[ -z $httptcp ] && httptcp="http"
