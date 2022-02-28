@@ -116,7 +116,6 @@ runTunnel(){
 killTunnel(){
 	[ $ngrokStatus == "未安装" ] && red "检测到未安装Ngrok程序包，无法执行操作！！" && back2menu
 	[ $authStatus == "未授权" ] && red "未授权Ngrok程序包，无法执行操作！！！" && back2menu
-	[[ -z $(screen -help 2>/dev/null) ]] && ${PACKAGE_UPDATE[int]} && ${PACKAGE_INSTALL[int]} screen
 	screen -S screen4ngrok -X quit
 	green "隧道停止成功！"
 }
