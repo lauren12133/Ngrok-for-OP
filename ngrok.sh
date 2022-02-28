@@ -134,10 +134,8 @@ menu(){
 	checkStatus
 	red "=================================="
 	echo "                           "
-	red "      Ngrok 内网穿透一键脚本       "
-	red "          by 小御坂的破站           "
-	echo "                           "
-	red "  Site: https://owo.misaka.rest  "
+	red "   Ngrok openwrt 内网穿透一键脚本       "
+	red "       感谢 by 小御坂的破站           "
 	echo "                           "
 	red "=================================="
 	echo "                           "
@@ -158,7 +156,7 @@ menu(){
 		3) runTunnel ;;
 		4) killTunnel ;;
 		5) uninstall ;;
-		6) wget -N https://raw.githubusercontent.com/lauren12133/Ngrok-1key/master/ngrok.sh && sh ngrok.sh ;;
+		6) https://raw.githubusercontent.com/lauren12133/Ngrok-1key/master/ngrok.sh && sh ngrok.sh ;;
 		*) exit 1 ;;
 	esac
 }
