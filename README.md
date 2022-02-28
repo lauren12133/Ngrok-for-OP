@@ -13,7 +13,7 @@
 wget -N https://github.com/lauren12133/Ngrok-1key/raw/master/ngrok.sh && sh ngrok.sh
 ```
 
-快捷方式 `bash ngrok.sh`
+快捷方式 `sh ngrok.sh`
 
 ## 使用说明
 
