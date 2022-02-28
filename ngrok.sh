@@ -59,7 +59,7 @@ getNgrokAddress(){
 }
 
 download_ngrok(){
-	[ $ngrokStatus == "已安装" ] && red "检测到已安装Ngrok程序包，无需重复安装！！" 
+	[ $ngrokStatus == "已安装" ] && red "检测到已安装Ngrok程序包，无需重复安装！！" && exit 1
 	wget -N https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-$cpuArch.tgz
 	tar -xzvf ngrok-stable-linux-$cpuArch.tgz -C /usr/bin
 	green "Ngrok 程序包已安装成功"
@@ -67,7 +67,7 @@ download_ngrok(){
 }
 
 ngrok_authtoken(){
-	[ $ngrokStatus == "未安装" ] && red "检测到未安装Ngrok程序包，无法执行操作！！" && back2menu
+	[ $ngrokStatus == "未安装" ] && red "检测到未安装Ngrok程序包，无法执行操作！！" 
 	[ $authStatus == "已授权" ] && red "已授权Ngrok程序包，无需重复授权！！！" && back2menu
 	read -p "请输入Ngrok官方网站的Authtoken：" authtoken
 	[ -z $authtoken ] && red "无输入Authtoken，授权过程中断！" && back2menu
