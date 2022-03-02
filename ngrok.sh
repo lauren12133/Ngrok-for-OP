@@ -107,6 +107,7 @@ killTunnel(){
 uninstall(){
 	rm -rf /usr/bin/ngrok
 	rm -rf /root/ngrok-stable-linux-$cpuArch.tgz ngrok .ngrok2 ngrok.sh
+	sed -i '/ngrok/d' /etc/rc.local
 	green "Ngrok 程序包已卸载成功"
 	back2menu
 }
@@ -119,10 +120,9 @@ start(){
 	[ -z $httptcp ] && httptcp="http"
 	read -p "请输入反代端口（默认80）：" tunnelPort
 	[ -z $tunnelPort ] && tunnelPort=80
-	red "=================================="
-	echo ngrok $httptcp $ip:$tunnelPort -region $ngrok_region
-	red "=================================="
-	yellow "请将输出的命令复制粘贴至openwrt-启动项 下拉最下方（本地启动脚本）exit0的上方即可开机启动 "
+	sed -i '/exit/d' /etc/rc.local
+	echo ngrok $httptcp $ip:$tunnelPort -region $ngrok_region >> /etc/rc.local
+	yellow "自启配置完成，配置文件在/etc/rc.local 可在openwrt启动项页面最下方查看 "
 	yellow "获取外网地址请登录https://dashboard.ngrok.com/endpoints/status Ngrok官网查看 "
 	back2menu
 }
