@@ -5,7 +5,7 @@
 > PS: 由于Ngrok免费版本的限制，本脚本只能转发HTTP和TCP协议
 
 后台启动需要依赖“Screen”
-未安装的用户请执行：opkg update && opkg install Screen
+未安装的用户请执行：opkg update && opkg install screen
 
 ## 使用方法
 
