@@ -121,7 +121,7 @@ start(){
 	read -p "请输入反代端口（默认80）：" tunnelPort
 	[ -z $tunnelPort ] && tunnelPort=80
 	sed -i '/exit/d' /etc/rc.local
-	echo ngrok $httptcp $ip:$tunnelPort -region $ngrok_region >> /etc/rc.local
+	echo screen -USdm screen4ngrok ngrok $httptcp $ip:$tunnelPort -region $ngrok_region >> /etc/rc.local
 	yellow "自启配置完成，配置文件在/etc/rc.local 可在openwrt启动项页面最下方查看 "
 	yellow "获取外网地址请登录https://dashboard.ngrok.com/cloud-edge/status Ngrok官网查看 "
 	back2menu
