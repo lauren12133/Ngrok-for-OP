@@ -10,7 +10,7 @@
 ## 使用方法
 
 ```shell
-wget -N https://github.com/lauren12133/Ngrok-1key/raw/master/ngrok.sh && sh ngrok.sh
+wget -N https://raw.githubusercontent.com/lauren12133/Ngrok-for-OP/master/ngrok.sh && sh ngrok.sh
 ```
 
 快捷方式 `sh ngrok.sh`
