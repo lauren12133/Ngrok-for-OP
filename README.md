@@ -22,7 +22,3 @@ wget -N https://raw.githubusercontent.com/lauren12133/Ngrok-for-OP/master/ngrok.
 ## 参考资料
 
 Ngrok: https://ngrok.com/
-
-## 如需使用市面主流liux操作环境请访问“Misaka”项目
-
-GitHub: https://github.com/Misaka-blog/Ngrok-1key
